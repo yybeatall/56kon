@@ -1,34 +1,40 @@
 # usr/bin/python
 # encoding:utf-8
-# 综合测试--登录
+# 足迹版测试--注销
 import unittest
 from time import sleep
 
 from appium import webdriver
-from ddt import ddt, data, unpack
 
-@ddt
+
 class MyTestCase(unittest.TestCase):
     def setUp(self):
-        # 天天模拟器
+
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
+        # 天天模拟器
         desired_caps['platformVersion'] = '4.4.4'
         desired_caps['deviceName'] = '127.0.0.1:6555'
+
         desired_caps['appPackage'] = 'com.yihu001.kon.manager'
-        desired_caps['appActivity'] = '.activity.LoginActivity'
+        desired_caps['appActivity'] = '.activity.HomeActivity'
         desired_caps["unicodeKeyboard"] = "True"
         desired_caps["resetKeyboard"] = "True"
         # desired_caps["automationName"] = "Selendroid"
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
-    @data(("13940914601", "123456"))
-    @unpack
-    def testLogin(self, username, password):
-        global exist
-        self.driver.find_element_by_id("com.yihu001.kon.manager:id/et_username").send_keys(username)
-        self.driver.find_element_by_id("com.yihu001.kon.manager:id/et_password").send_keys(password)
-        self.driver.find_element_by_id("com.yihu001.kon.manager:id/sign_in").click()
+    def testLogout(self):
+        #点击我的
+        self.driver.find_elements_by_id("com.yihu001.kon.manager:id/bottom_navigation_container")[3].click()
+        #点击设置按钮
+        self.driver.find_element_by_id("com.yihu001.kon.manager:id/ib_profile_set").click()
+        #滑动
+        self.driver.swipe(500,1000,500,400)
+        #点击退出
+        self.driver.find_element_by_id("com.yihu001.kon.manager:id/tv_loginout").click()
+        #确定
+        self.driver.find_element_by_id("com.yihu001.kon.manager:id/dialog_button_ok").click()
+
 
         sleep(3)
 
@@ -39,4 +45,3 @@ class MyTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
